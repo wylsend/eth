@@ -1,0 +1,33 @@
+pragma solidity ^0.4.0;
+
+contract Coin {
+
+    address public owner;
+    address public who;
+    address public contr;
+    mapping (address => uint) public balances;
+    event Sent(address from, address to, uint amount);
+
+    function Coin() public {
+        owner = msg.sender;
+    }
+
+    function generate(address to, uint amount) public {
+        if (msg.sender != owner) return;
+        balances[to] += amount;
+    }
+
+    function send(address who, address contr, uint amount) public {
+        if (balances[who] < amount) return;
+        balances[who] -= amount;
+        balances[contr] += amount;
+        Sent(who, contr, amount);
+    }
+
+    function end(address who) public constant returns (string randomNumber) {
+        if (balances[who] < 10) return randomNumber = "Not enought trust";
+        randomNumber = "Zamechatelno!";
+        return randomNumber;
+    }
+
+}
